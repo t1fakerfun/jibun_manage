@@ -14,3 +14,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+# 開発目的
+このアプリを使うことで自分の現在の状態やこれからの状態をわかりやすくする。
+またゲーム感覚で健康になることができる。
+# 基本機能の構想
+このアプリではユーザが活動を入力することによって現在の活動がどれぐらいの余裕があるのかをHPとして可視化することができる。移動などは直接入力でもいいかもだけど移動した距離をアプリ側で測ってあげるのもいいかも。また食事や睡眠、趣味などでHPを回復する。勉強とか仕事とかでもポイントを減らす。ユーザは自分でタスクを作ることもHPを減らすこともできる。
+また、ユーザがHPを自分で減らすこともできて細かい調整ができる。1週間ごとにどれぐらいの行動でHPが０になったかみたいなものをフィードバックとかしてHP減らす量とかを調整したり、HPが０より小さくなる日が多すぎたら警告してあげたり逆にHPがずっと高いままだったら怠けすぎだと催促する。
