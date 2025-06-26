@@ -1,17 +1,17 @@
-class RestData {
+class ActiveData {
   int userId;
   int id;
   String title;
   int value;
 
-  RestData({
+  ActiveData({
     required this.userId,
     required this.id,
     required this.title,
     required this.value,
   });
-  factory RestData.fromMap(Map<String, dynamic> map) {
-    return RestData(
+  factory ActiveData.fromMap(Map<String, dynamic> map) {
+    return ActiveData(
       userId: map['userId'],
       id: map['id'],
       title: map['title'],
