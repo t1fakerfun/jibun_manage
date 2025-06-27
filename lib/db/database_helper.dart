@@ -25,7 +25,7 @@ class DatabaseHelper {
   Future<void> _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE hp (
-        userId INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         health INTEGER DEFAULT 100,
         updatedAt TEXT NOT NULL
@@ -37,7 +37,7 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         userId INTEGER NOT NULL,
         title TEXT NOT NULL,
-        value INTEGER NOT NULL,
+        value INTEGER NOT NULL
       );
     ''');
 
