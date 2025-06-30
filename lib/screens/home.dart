@@ -16,11 +16,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   int? _hp;
   bool _loading = true;
+  late Future<List<ActiveData>> _activities;
+  late Future<List<RestData>> _rests;
 
   @override
   void initState() {
     super.initState();
     _loadHP();
+    _activities = _loadActivities();
+    _rests = _loadRests();
   }
 
   Future<void> _loadHP() async {
@@ -48,6 +52,28 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<List<ActiveData>> _loadActivities() async {
+    final userId = await getOrCreateUserId();
+    final db = await DatabaseHelper().database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'active',
+      where: 'userId = ?',
+      whereArgs: [userId],
+    );
+    return maps.map((map) => ActiveData.fromMap(map)).toList();
+  }
+
+  Future<List<RestData>> _loadRests() async {
+    final userId = await getOrCreateUserId();
+    final db = await DatabaseHelper().database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'rest',
+      where: 'userId = ?',
+      whereArgs: [userId],
+    );
+    return maps.map((map) => RestData.fromMap(map)).toList();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -58,8 +84,50 @@ class _HomeScreenState extends State<HomeScreen> {
     Center(
       child: _loading ? const CircularProgressIndicator() : Text('HP: $_hp'),
     ),
-    const Text('Activities'),
-    const Text('Rest'),
+    // Activities
+    FutureBuilder<List<ActiveData>>(
+      future: _loadActivities(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('アクティビティがありません'));
+        }
+        return ListView(
+          children: snapshot.data!
+              .map(
+                (a) => ListTile(
+                  title: Text(a.title),
+                  subtitle: Text('値: ${a.value}'),
+                ),
+              )
+              .toList(),
+        );
+      },
+    ),
+    // Rest
+    FutureBuilder<List<RestData>>(
+      future: _loadRests(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('休憩データがありません'));
+        }
+        return ListView(
+          children: snapshot.data!
+              .map(
+                (r) => ListTile(
+                  title: Text(r.title),
+                  subtitle: Text('値: ${r.value}'),
+                ),
+              )
+              .toList(),
+        );
+      },
+    ),
   ];
 
   @override
