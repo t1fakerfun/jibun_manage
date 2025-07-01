@@ -33,4 +33,21 @@ class ActiveRepository {
       value: activeData.value,
     );
   }
+
+  Future<ActiveData> updateActiveData(
+    Database db,
+    ActiveData activeData,
+  ) async {
+    await db.update(
+      "active",
+      activeData.toMap(),
+      where: "id = ?",
+      whereArgs: [activeData.id],
+    );
+    return activeData;
+  }
+
+  Future<void> deleteActiveData(Database db, int id) async {
+    await db.delete("active", where: "id = ?", whereArgs: [id]);
+  }
 }

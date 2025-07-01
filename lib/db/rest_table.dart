@@ -35,4 +35,19 @@ class RestRepository {
       value: restData.value,
     );
   }
+
+  Future<RestData> updateRestData(Database db, RestData restData) async {
+    await db.update(
+      "rest",
+      restData.toMap(),
+      where: "id = ?",
+      whereArgs: [restData.id],
+    );
+    return restData;
+  }
+
+  Future<RestData> deleteRestData(Database db, int id) async {
+    await db.delete("rest", where: "id = ?", whereArgs: [id]);
+    return RestData(userId: 0, id: id, title: '', value: 0); // 削除後は空のデータを返す
+  }
 }
